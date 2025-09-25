@@ -130,7 +130,7 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
           </div>
 
           {/* Time Status */}
-          <div className="flex items-center gap-2 mb-4 text-sm">
+          <div className="flex items-center justify-center gap-2 mb-4 text-sm">
             <Clock className="h-4 w-4 text-muted-foreground" />
             {vote.isActive ? (
               <span className="text-success font-medium">
