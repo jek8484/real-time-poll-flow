@@ -149,7 +149,7 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
 
           {/* Early End Button for My Votes */}
           {vote.isMyVote && vote.isActive && (
-            <div className="mt-3 pt-3 border-t border-card-border">
+            <div className="mt-3 pt-3 border-t border-card-border flex justify-center">
               <Button
                 variant="ghost"
                 size="sm"
