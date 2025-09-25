@@ -155,7 +155,7 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
                 size="sm"
                 className="text-warning hover:text-warning-foreground hover:bg-warning/10"
               >
-                투표 조기 종료
+                투표 지금 종료
               </Button>
             </div>
           )}
