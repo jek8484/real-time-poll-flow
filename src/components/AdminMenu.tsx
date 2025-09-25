@@ -12,7 +12,8 @@ export const AdminMenu = ({ onClose }: AdminMenuProps) => {
   const [adminPassword, setAdminPassword] = useState("");
 
   const handleHiddenVotes = () => {
-    console.log("내가 숨긴 투표 보기");
+    // 새창으로 숨긴 투표 페이지 열기
+    window.open("/hidden-votes", "_blank", "width=800,height=600,scrollbars=yes,resizable=yes");
     onClose();
   };
 
