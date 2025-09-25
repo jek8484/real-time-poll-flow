@@ -6,15 +6,14 @@ import { Card, CardContent } from "@/components/ui/card";
 
 interface AdminMenuProps {
   onClose: () => void;
+  onOpenHiddenVotes: () => void;
 }
 
-export const AdminMenu = ({ onClose }: AdminMenuProps) => {
+export const AdminMenu = ({ onClose, onOpenHiddenVotes }: AdminMenuProps) => {
   const [adminPassword, setAdminPassword] = useState("");
 
   const handleHiddenVotes = () => {
-    // 새창으로 숨긴 투표 페이지 열기
-    window.open("/hidden-votes", "_blank", "width=800,height=600,scrollbars=yes,resizable=yes");
-    onClose();
+    onOpenHiddenVotes();
   };
 
   const handleAdminLogin = () => {

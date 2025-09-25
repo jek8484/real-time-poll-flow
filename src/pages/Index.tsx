@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { VoteCard } from "@/components/VoteCard";
 import { AdminMenu } from "@/components/AdminMenu";
+import { HiddenVotesModal } from "@/components/HiddenVotesModal";
 
 // Mock data for development
 const mockVotes = [
@@ -60,6 +61,7 @@ const mockVotes = [
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showAdminMenu, setShowAdminMenu] = useState(false);
+  const [showHiddenVotesModal, setShowHiddenVotesModal] = useState(false);
 
   const activeVotes = mockVotes.filter(vote => vote.isActive);
   const endedVotes = mockVotes.filter(vote => !vote.isActive);
@@ -99,7 +101,13 @@ const Index = () => {
                 <Settings className="h-5 w-5" />
               </Button>
               {showAdminMenu && (
-                <AdminMenu onClose={() => setShowAdminMenu(false)} />
+                <AdminMenu 
+                  onClose={() => setShowAdminMenu(false)}
+                  onOpenHiddenVotes={() => {
+                    setShowAdminMenu(false);
+                    setShowHiddenVotesModal(true);
+                  }}
+                />
               )}
             </div>
           </div>
@@ -163,6 +171,12 @@ const Index = () => {
           <Plus className="h-6 w-6" />
         </Button>
       </div>
+
+      {/* Hidden Votes Modal */}
+      <HiddenVotesModal
+        isOpen={showHiddenVotesModal}
+        onClose={() => setShowHiddenVotesModal(false)}
+      />
     </div>
   );
 };
