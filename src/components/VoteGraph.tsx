@@ -63,13 +63,15 @@ export const VoteGraph = ({ options, totalVotes, winningOption }: VoteGraphProps
       </div>
 
       {/* Labels for small percentages */}
-      <div className="flex justify-between items-center mt-2">
-        {options.map((option) => {
-          const percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
-          const isWinning = option.id === winningOption.id;
-          
-          // Show label if percentage is too small to display in bar
-          if (percentage <= 15 && percentage > 0) {
+      <div className="flex flex-wrap gap-2 justify-center mt-2">
+        {options
+          .filter((option) => {
+            const percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
+            return percentage <= 15 && percentage > 0;
+          })
+          .map((option) => {
+            const percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
+            
             return (
               <div key={`label-${option.id}`} className="text-xs text-muted-foreground">
                 <span className={`inline-block w-2 h-2 rounded-full mr-1 ${
@@ -79,9 +81,7 @@ export const VoteGraph = ({ options, totalVotes, winningOption }: VoteGraphProps
                 {option.name}: {Math.round(percentage)}%
               </div>
             );
-          }
-          return null;
-        })}
+          })}
       </div>
 
       {/* Winning indicator */}

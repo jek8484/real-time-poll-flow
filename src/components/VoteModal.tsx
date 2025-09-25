@@ -1,4 +1,4 @@
-import { X, Users, Clock } from "lucide-react";
+import { X, Users, Clock, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { VoteGraph } from "./VoteGraph";
@@ -72,26 +72,10 @@ export const VoteModal = ({ vote, isOpen, onClose, onVote }: VoteModalProps) => 
 
         <CardContent className="space-y-6">
           {/* 참여 정보 */}
-          <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center justify-center text-sm">
             <div className="flex items-center gap-1 text-muted-foreground">
               <Users className="h-4 w-4" />
               <span>총 {vote.totalVotes}명 참여</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Clock className="h-4 w-4 text-muted-foreground" />
-              {vote.isActive ? (
-                <span className="text-success font-medium">
-                  {formatTimeRemaining(vote.endTime)}
-                </span>
-              ) : vote.isEarlyEnded ? (
-                <span className="text-warning text-xs">
-                  조기 종료됨 ({formatEndedTime(vote.earlyEndTime!, vote.originalEndTime!)})
-                </span>
-              ) : (
-                <span className="text-muted-foreground">
-                  {formatEndedTime(vote.endTime)}
-                </span>
-              )}
             </div>
           </div>
 
@@ -114,18 +98,36 @@ export const VoteModal = ({ vote, isOpen, onClose, onVote }: VoteModalProps) => 
                   size="lg"
                   onClick={() => onVote(option.id)}
                   disabled={!vote.isActive}
-                  className={`w-full justify-center text-base py-3 ${
+                  className={`w-full justify-between text-base py-3 ${
                     vote.myChoice === option.id 
                       ? `bg-vote-${option.color} hover:bg-vote-${option.color} text-white font-semibold`
                       : `hover:bg-vote-${option.color}-light hover:border-vote-${option.color} transition-all duration-200`
                   }`}
                 >
-                  {option.name}
+                  <span>{option.name}</span>
                   {vote.myChoice === option.id && (
-                    <span className="ml-2 text-xs opacity-90">✓</span>
+                    <Check className="h-4 w-4" />
                   )}
                 </Button>
               ))}
+            </div>
+
+            {/* 시간 정보 */}
+            <div className="flex items-center justify-center gap-2 text-sm">
+              <Clock className="h-4 w-4 text-muted-foreground" />
+              {vote.isActive ? (
+                <span className="text-success font-medium">
+                  {formatTimeRemaining(vote.endTime)}
+                </span>
+              ) : vote.isEarlyEnded ? (
+                <span className="text-warning text-xs">
+                  조기 종료됨 ({formatEndedTime(vote.earlyEndTime!, vote.originalEndTime!)})
+                </span>
+              ) : (
+                <span className="text-muted-foreground">
+                  {formatEndedTime(vote.endTime)}
+                </span>
+              )}
             </div>
 
             {/* 닫기 버튼 */}

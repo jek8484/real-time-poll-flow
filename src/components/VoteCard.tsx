@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MoreVertical, ChevronRight, Clock, Users } from "lucide-react";
+import { MoreVertical, ChevronRight, Clock, Users, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { VoteGraph } from "./VoteGraph";
@@ -106,6 +106,29 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
             />
           </div>
 
+          {/* Vote Buttons */}
+          <div className="flex gap-2 mb-4">
+            {vote.options.map((option) => (
+              <Button
+                key={option.id}
+                variant={vote.myChoice === option.id ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleVote(option.id)}
+                disabled={!vote.isActive}
+                className={`flex-1 ${
+                  vote.myChoice === option.id 
+                    ? `bg-vote-${option.color} hover:bg-vote-${option.color} text-white`
+                    : `hover:bg-vote-${option.color}-light hover:border-vote-${option.color}`
+                } transition-all duration-200`}
+              >
+                <span>{option.name}</span>
+                {vote.myChoice === option.id && (
+                  <Check className="h-4 w-4 ml-2" />
+                )}
+              </Button>
+            ))}
+          </div>
+
           {/* Time Status */}
           <div className="flex items-center gap-2 mb-4 text-sm">
             <Clock className="h-4 w-4 text-muted-foreground" />
@@ -122,26 +145,6 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
                 {formatEndedTime(vote.endTime)}
               </span>
             )}
-          </div>
-
-          {/* Vote Buttons */}
-          <div className="flex gap-2">
-            {vote.options.map((option) => (
-              <Button
-                key={option.id}
-                variant={vote.myChoice === option.id ? "default" : "outline"}
-                size="sm"
-                onClick={() => handleVote(option.id)}
-                disabled={!vote.isActive}
-                className={`flex-1 ${
-                  vote.myChoice === option.id 
-                    ? `bg-vote-${option.color} hover:bg-vote-${option.color} text-white`
-                    : `hover:bg-vote-${option.color}-light hover:border-vote-${option.color}`
-                } transition-all duration-200`}
-              >
-                {option.name}
-              </Button>
-            ))}
           </div>
 
           {/* Early End Button for My Votes */}
