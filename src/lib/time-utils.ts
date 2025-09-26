@@ -8,11 +8,14 @@ export const formatTimeRemaining = (endTime: Date): string => {
   
   const hours = Math.floor(diff / (1000 * 60 * 60));
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
   
   if (hours > 0) {
     return `종료까지 ${hours}시간 ${minutes}분 남음`;
-  } else {
+  } else if (minutes > 0) {
     return `종료까지 ${minutes}분 남음`;
+  } else {
+    return `종료까지 ${seconds}초 남음`;
   }
 };
 
