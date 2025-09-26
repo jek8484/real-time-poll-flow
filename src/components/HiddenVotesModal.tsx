@@ -246,26 +246,7 @@ export const HiddenVotesModal = ({ isOpen, onClose }: HiddenVotesModalProps) => 
                       </div>
 
                       {/* Status and Time */}
-                      <div className="flex items-center justify-between text-sm">
-                        <div className="flex items-center gap-2">
-                          {vote.isMyVote && (
-                            <span className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs font-medium">
-                              내가 만든 투표
-                            </span>
-                          )}
-                          {vote.myChoice && (
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              vote.myChoice === 'approve' 
-                                ? 'bg-vote-approve/10 text-vote-approve'
-                                : vote.myChoice === 'thinking'
-                                ? 'bg-vote-thinking/10 text-vote-thinking'
-                                : 'bg-vote-reject/10 text-vote-reject'
-                            }`}>
-                              내 선택: {vote.options.find(o => o.id === vote.myChoice)?.name}
-                            </span>
-                          )}
-                        </div>
-                        
+                      <div className="flex items-center justify-end text-sm">
                         <div className="text-muted-foreground">
                           {vote.isActive ? (
                             <span className="text-success font-medium">
