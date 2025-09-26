@@ -47,9 +47,9 @@ const mockVotes = [
     isActive: true,
     isMyVote: true,
     options: [
-      { id: "approve", name: "떡볶이", votes: 18, color: "approve" as const },
-      { id: "thinking", name: "고민 중", votes: 5, color: "thinking" as const },
-      { id: "reject", name: "햄버거", votes: 11, color: "reject" as const }
+      { id: "approve", name: "떡볶이", votes: 12, color: "approve" as const },
+      { id: "thinking", name: "고민 중", votes: 3, color: "thinking" as const },
+      { id: "reject", name: "햄버거", votes: 19, color: "reject" as const }
     ],
     myChoice: "approve" as string | null
   },
