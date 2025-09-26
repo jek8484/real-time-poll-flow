@@ -1,6 +1,7 @@
-import { X, Users, Clock, Check } from "lucide-react";
+import { X, Users, Clock, Check, MoreHorizontal, QrCode, Share, EyeOff, Flag, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { VoteGraph } from "./VoteGraph";
 import { formatTimeRemaining, formatEndedTime } from "@/lib/time-utils";
 
@@ -73,11 +74,40 @@ export const VoteModal = ({ vote, isOpen, onClose, onVote }: VoteModalProps) => 
 
         <CardContent className="space-y-6">
           {/* 참여 정보 */}
-          <div className="flex items-center justify-center text-sm">
+          <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-1 text-muted-foreground">
               <Users className="h-4 w-4" />
               <span>총 {vote.totalVotes}명 참여</span>
             </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 bg-surface border-card-border">
+                <DropdownMenuItem className="cursor-pointer hover:bg-muted">
+                  <QrCode className="h-4 w-4 mr-2" />
+                  QR 코드
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer hover:bg-muted">
+                  <Share className="h-4 w-4 mr-2" />
+                  공유하기
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer hover:bg-muted">
+                  <EyeOff className="h-4 w-4 mr-2" />
+                  숨기기
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer hover:bg-muted">
+                  <Flag className="h-4 w-4 mr-2" />
+                  신고하기
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer hover:bg-muted text-destructive">
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  삭제하기
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           {/* 투표 그래프 */}
