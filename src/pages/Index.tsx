@@ -40,21 +40,6 @@ const mockVotes = [
     myChoice: null
   },
   {
-    id: "4",
-    title: "오늘 저녁 야근 후 간식 투표",
-    description: "늦은 시간까지 고생하는 팀원들을 위한 간식을 준비하려고 합니다.",
-    totalVotes: 34,
-    endTime: new Date(Date.now() + 59 * 1000), // 59 seconds from now
-    isActive: true,
-    isMyVote: true,
-    options: [
-      { id: "approve", name: "떡볶이", votes: 12, color: "approve" as const },
-      { id: "thinking", name: "고민 중", votes: 3, color: "thinking" as const },
-      { id: "reject", name: "햄버거", votes: 19, color: "reject" as const }
-    ],
-    myChoice: "approve" as string | null
-  },
-  {
     id: "5",
     title: "회의실 에어컨 온도 설정",
     description: "여름철 회의실 적정 온도에 대한 투표입니다.",
