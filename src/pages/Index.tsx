@@ -116,7 +116,7 @@ const Index = () => {
             <div className="flex-1"></div>
             
             {/* Search */}
-            <div className="max-w-sm relative">
+            <div className="max-w-lg relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="투표 검색..."
