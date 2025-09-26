@@ -44,17 +44,26 @@ export const VoteGraph = ({ options, totalVotes, winningOption }: VoteGraphProps
                 }}
               >
                 {/* Content inside the bar */}
-                {percentage > 15 && (
+                {percentage > 5 && (
                   <div className="absolute inset-0 flex items-center justify-center px-2">
                     <div className="text-center">
-                      <div className={`text-xs font-medium ${isWinning ? 'font-bold' : ''} flex items-center justify-center gap-1`}>
+                      <div className={`text-xs font-medium ${isWinning ? "font-bold" : ""} flex items-center justify-center gap-1`}>
                         {isWinning && <span className="text-yellow-300">🏆</span>}
                         {option.name}
                         {isWinning && <span className="text-xs bg-white/20 px-1 rounded">1위</span>}
                       </div>
-                      <div className={`text-xs ${isWinning ? 'font-bold text-white' : 'opacity-90'}`}>
+                      <div className={`text-xs ${isWinning ? "font-bold text-white" : "opacity-90"}`}>
                         {Math.round(percentage)}%
                       </div>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Very small percentages - show only percentage */}
+                {percentage > 0 && percentage <= 5 && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className={`text-xs ${isWinning ? "font-bold text-white" : "opacity-90"}`}>
+                      {Math.round(percentage)}%
                     </div>
                   </div>
                 )}
@@ -62,28 +71,6 @@ export const VoteGraph = ({ options, totalVotes, winningOption }: VoteGraphProps
             );
           })}
         </div>
-      </div>
-
-      {/* Labels for small percentages */}
-      <div className="flex flex-wrap gap-2 justify-center mt-2">
-        {options
-          .filter((option) => {
-            const percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
-            return percentage <= 15 && percentage > 0;
-          })
-          .map((option) => {
-            const percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
-            
-            return (
-              <div key={`label-${option.id}`} className="text-xs text-muted-foreground">
-                <span className={`inline-block w-2 h-2 rounded-full mr-1 ${
-                  option.color === 'approve' ? 'bg-vote-approve' :
-                  option.color === 'thinking' ? 'bg-vote-thinking' : 'bg-vote-reject'
-                }`}></span>
-                {option.name}: {Math.round(percentage)}%
-              </div>
-            );
-          })}
       </div>
 
       {/* Winning indicator */}
