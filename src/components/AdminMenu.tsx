@@ -19,13 +19,9 @@ export const AdminMenu = ({ onClose, onOpenHiddenVotes }: AdminMenuProps) => {
   };
 
   const handleAdminLogin = () => {
-    if (adminPassword === "1") {
-      console.log("관리자 모드 진입");
-      setShowReportsModal(true);
-      onClose();
-    } else {
-      alert("잘못된 비밀번호입니다.");
-    }
+    console.log("관리자 모드 진입");
+    setShowReportsModal(true);
+    onClose();
   };
 
   return (
