@@ -1,7 +1,10 @@
-import { X, Flag, AlertTriangle, Users } from "lucide-react";
+import { useState } from "react";
+import { X, Flag, AlertTriangle, Users, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 
 interface ReportedVote {
   id: string;
@@ -53,7 +56,17 @@ const mockReportedVotes: ReportedVote[] = [
 ];
 
 export const ReportsModal = ({ isOpen, onClose }: ReportsModalProps) => {
+  const [autoHideThreshold, setAutoHideThreshold] = useState(5);
+  const { toast } = useToast();
+
   if (!isOpen) return null;
+
+  const handleSaveSettings = () => {
+    toast({
+      title: "설정 저장됨",
+      description: `신고 ${autoHideThreshold}건 이상 시 자동 숨김 처리됩니다.`,
+    });
+  };
 
   const totalReports = mockReportedVotes.reduce((sum, vote) => sum + vote.reportCount, 0);
   const autoHiddenCount = mockReportedVotes.filter(vote => vote.isAutoHidden).length;
@@ -88,6 +101,36 @@ export const ReportsModal = ({ isOpen, onClose }: ReportsModalProps) => {
         </CardHeader>
 
         <CardContent className="space-y-4">
+          {/* Auto Hide Settings */}
+          <Card className="border-border bg-muted/20">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Settings className="h-4 w-4 text-primary" />
+                <h3 className="font-medium text-foreground">자동 숨김 설정</h3>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 flex-1">
+                  <span className="text-sm text-muted-foreground">신고</span>
+                  <Input
+                    type="number"
+                    value={autoHideThreshold}
+                    onChange={(e) => setAutoHideThreshold(Number(e.target.value))}
+                    className="w-16 h-8 text-center"
+                    min="1"
+                    max="50"
+                  />
+                  <span className="text-sm text-muted-foreground">건 이상 시 자동 숨김</span>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={handleSaveSettings}
+                  className="h-8"
+                >
+                  저장
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
           {mockReportedVotes.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <Flag className="h-12 w-12 mx-auto mb-4 opacity-50" />
