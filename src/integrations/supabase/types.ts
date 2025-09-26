@@ -14,26 +14,209 @@ export type Database = {
   }
   public: {
     Tables: {
-      post: {
+      hidden_votes: {
         Row: {
-          content: string | null
-          created_at: string
-          id: number
-          title: string | null
+          hidden_at: string
+          id: string
+          user_id: string
+          vote_id: number
         }
         Insert: {
-          content?: string | null
-          created_at?: string
-          id?: number
-          title?: string | null
+          hidden_at?: string
+          id?: string
+          user_id: string
+          vote_id: number
         }
         Update: {
-          content?: string | null
+          hidden_at?: string
+          id?: string
+          user_id?: string
+          vote_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hidden_votes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hidden_votes_vote_id_fkey"
+            columns: ["vote_id"]
+            isOneToOne: false
+            referencedRelation: "votes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      privacy_policies: {
+        Row: {
+          content: string
+          created_at: string
+          effective_date: string
+          id: string
+          is_active: boolean
+          title: string
+          version: string
+        }
+        Insert: {
+          content: string
           created_at?: string
-          id?: number
-          title?: string | null
+          effective_date: string
+          id?: string
+          is_active?: boolean
+          title: string
+          version: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          effective_date?: string
+          id?: string
+          is_active?: boolean
+          title?: string
+          version?: string
         }
         Relationships: []
+      }
+      reports: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          reason: string
+          reporter_id: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["report_status"]
+          vote_id: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          reason: string
+          reporter_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          vote_id: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          reason?: string
+          reporter_id?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          vote_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_vote_id_fkey"
+            columns: ["vote_id"]
+            isOneToOne: false
+            referencedRelation: "votes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          created_at: string
+          device_id: string | null
+          id: string
+          ip_address: unknown | null
+          updated_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          ip_address?: unknown | null
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          ip_address?: unknown | null
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      votes: {
+        Row: {
+          allow_multiple_choice: boolean
+          content: string | null
+          created_at: string
+          creator_id: string | null
+          description: string | null
+          expires_at: string | null
+          id: number
+          is_anonymous: boolean
+          options: Json
+          status: Database["public"]["Enums"]["vote_status"]
+          title: string | null
+          vote_count: number
+        }
+        Insert: {
+          allow_multiple_choice?: boolean
+          content?: string | null
+          created_at?: string
+          creator_id?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: number
+          is_anonymous?: boolean
+          options?: Json
+          status?: Database["public"]["Enums"]["vote_status"]
+          title?: string | null
+          vote_count?: number
+        }
+        Update: {
+          allow_multiple_choice?: boolean
+          content?: string | null
+          created_at?: string
+          creator_id?: string | null
+          description?: string | null
+          expires_at?: string | null
+          id?: number
+          is_anonymous?: boolean
+          options?: Json
+          status?: Database["public"]["Enums"]["vote_status"]
+          title?: string | null
+          vote_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "votes_creator_id_fkey"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -43,7 +226,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      report_status: "pending" | "reviewed" | "resolved" | "dismissed"
+      vote_status: "active" | "closed" | "draft"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -170,6 +354,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      report_status: ["pending", "reviewed", "resolved", "dismissed"],
+      vote_status: ["active", "closed", "draft"],
+    },
   },
 } as const
