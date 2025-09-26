@@ -19,13 +19,9 @@ export const AdminMenu = ({ onClose, onOpenHiddenVotes }: AdminMenuProps) => {
   };
 
   const handleAdminLogin = () => {
-    if (adminPassword === "1") {
-      console.log("관리자 모드 진입");
-      setShowReportsModal(true);
-      onClose();
-    } else {
-      alert("잘못된 비밀번호입니다.");
-    }
+    console.log("관리자 모드 진입");
+    setShowReportsModal(true);
+    onClose();
   };
 
   return (
@@ -60,20 +56,13 @@ export const AdminMenu = ({ onClose, onOpenHiddenVotes }: AdminMenuProps) => {
                   <Shield className="h-4 w-4" />
                   관리자 모드
                 </div>
-                <Input
-                  type="password"
-                  placeholder="비밀번호 입력"
-                  value={adminPassword}
-                  onChange={(e) => setAdminPassword(e.target.value)}
-                  className="text-sm"
-                />
                 <Button
                   variant="secondary"
                   size="sm"
                   className="w-full"
                   onClick={handleAdminLogin}
                 >
-                  입장
+                  신고 목록 보기
                 </Button>
               </div>
             </div>
