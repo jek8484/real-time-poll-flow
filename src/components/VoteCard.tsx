@@ -88,7 +88,7 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
                 <MoreVertical className="h-4 w-4" />
               </Button>
               {showActions && (
-                <div className="absolute right-0 top-8 z-10">
+                <div className="absolute right-0 top-10 z-50">
                   <VoteActions 
                     vote={vote} 
                     onClose={() => setShowActions(false)} 

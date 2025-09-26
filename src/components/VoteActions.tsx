@@ -1,4 +1,4 @@
-import { QrCode, Share, EyeOff, Flag, Trash2, X } from "lucide-react";
+import { QrCode, Share, EyeOff, Flag, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -51,80 +51,72 @@ export const VoteActions = ({ vote, onClose }: VoteActionsProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm" onClick={onClose}>
-      <div 
-        className="absolute top-0 right-4 mt-2 min-w-[200px]"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <Card className="shadow-lg border-card-border">
-          <CardContent className="p-2">
-            <div className="flex items-center justify-between mb-2 px-2">
-              <span className="text-sm font-medium text-muted-foreground">메뉴</span>
-              <Button variant="ghost" size="icon" onClick={onClose} className="h-6 w-6">
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
+    <>
+      {/* 백드롭 */}
+      <div className="fixed inset-0 z-40" onClick={onClose} />
+      
+      {/* 드롭다운 메뉴 */}
+      <Card className="relative z-50 shadow-lg border-card-border bg-background min-w-[180px]">
+        <CardContent className="p-2">
+          <div className="space-y-1">
+            {/* 공통 메뉴 */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full justify-start gap-3 px-3"
+              onClick={handleQRCode}
+            >
+              <QrCode className="h-4 w-4 flex-shrink-0" />
+              <span>QR코드</span>
+            </Button>
 
-            <div className="space-y-1">
-              {/* 공통 메뉴 */}
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full justify-start gap-3 px-3"
-                onClick={handleQRCode}
-              >
-                <QrCode className="h-4 w-4 flex-shrink-0" />
-                <span>QR코드</span>
-              </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full justify-start gap-3 px-3"
+              onClick={handleShare}
+            >
+              <Share className="h-4 w-4 flex-shrink-0" />
+              <span>공유하기</span>
+            </Button>
 
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full justify-start gap-3 px-3"
-                onClick={handleShare}
-              >
-                <Share className="h-4 w-4 flex-shrink-0" />
-                <span>공유하기</span>
-              </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full justify-start gap-3 px-3"
+              onClick={handleHide}
+            >
+              <EyeOff className="h-4 w-4 flex-shrink-0" />
+              <span>숨기기</span>
+            </Button>
 
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full justify-start gap-3 px-3"
-                onClick={handleHide}
-              >
-                <EyeOff className="h-4 w-4 flex-shrink-0" />
-                <span>숨기기</span>
-              </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full justify-start gap-3 px-3 text-warning hover:text-warning-foreground hover:bg-warning/10"
+              onClick={handleReport}
+            >
+              <Flag className="h-4 w-4 flex-shrink-0" />
+              <span>신고하기</span>
+            </Button>
 
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full justify-start gap-3 px-3 text-warning hover:text-warning-foreground hover:bg-warning/10"
-                onClick={handleReport}
-              >
-                <Flag className="h-4 w-4 flex-shrink-0" />
-                <span>신고하기</span>
-              </Button>
-
-              {/* 내 투표에만 표시 */}
-              {vote.isMyVote && (
-                <div className="border-t border-card-border pt-1">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="w-full justify-start gap-3 px-3 text-destructive hover:text-destructive-foreground hover:bg-destructive/10"
-                    onClick={handleDelete}
-                  >
-                    <Trash2 className="h-4 w-4 flex-shrink-0" />
-                    <span>삭제하기</span>
-                  </Button>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+            {/* 내 투표에만 표시 */}
+            {vote.isMyVote && (
+              <div className="border-t border-card-border pt-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full justify-start gap-3 px-3 text-destructive hover:text-destructive-foreground hover:bg-destructive/10"
+                  onClick={handleDelete}
+                >
+                  <Trash2 className="h-4 w-4 flex-shrink-0" />
+                  <span>삭제하기</span>
+                </Button>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </>
   );
 };
