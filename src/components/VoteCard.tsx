@@ -152,9 +152,9 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
           {vote.isMyVote && vote.isActive && (
             <div className="mt-3 pt-3 border-t border-card-border flex justify-center">
               <Button
-                variant="ghost"
+                variant="destructive"
                 size="sm"
-                className="text-warning hover:text-warning-foreground hover:bg-warning/10"
+                className="text-white"
               >
                 투표 지금 종료
               </Button>
