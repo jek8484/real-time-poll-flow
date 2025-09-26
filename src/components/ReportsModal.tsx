@@ -177,38 +177,6 @@ export const ReportsModal = ({ isOpen, onClose }: ReportsModalProps) => {
                           })}
                         </span>
                       </div>
-
-                      {/* Report Reasons */}
-                      <div>
-                        <div className="text-xs font-medium text-muted-foreground mb-2">신고 사유:</div>
-                        <div className="flex flex-wrap gap-1">
-                          {vote.reportReasons.map((reason, index) => (
-                            <Badge key={index} variant="outline" className="text-xs">
-                              {reason}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Actions */}
-                      <div className="flex items-center gap-2 pt-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="text-xs"
-                        >
-                          상세 보기
-                        </Button>
-                        {!vote.isAutoHidden && (
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            className="text-xs"
-                          >
-                            숨기기
-                          </Button>
-                        )}
-                      </div>
                     </div>
                   </CardContent>
                 </Card>
