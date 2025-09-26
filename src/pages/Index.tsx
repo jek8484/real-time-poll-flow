@@ -57,14 +57,14 @@ const mockVotes = [
     id: "5",
     title: "회의실 에어컨 온도 설정",
     description: "여름철 회의실 적정 온도에 대한 투표입니다.",
-    totalVotes: 42,
+    totalVotes: 100,
     endTime: new Date(Date.now() + 3 * 60 * 60 * 1000), // 3 hours from now
     isActive: true,
     isMyVote: false,
     options: [
-      { id: "approve", name: "22도", votes: 42, color: "approve" as const },
-      { id: "thinking", name: "고민 중", votes: 0, color: "thinking" as const },
-      { id: "reject", name: "26도", votes: 0, color: "reject" as const }
+      { id: "approve", name: "22도", votes: 98, color: "approve" as const },
+      { id: "thinking", name: "고민 중", votes: 1, color: "thinking" as const },
+      { id: "reject", name: "26도", votes: 1, color: "reject" as const }
     ],
     myChoice: null
   },
