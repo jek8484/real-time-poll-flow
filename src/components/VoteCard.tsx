@@ -150,11 +150,11 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
 
           {/* Early End Button for My Votes */}
           {vote.isMyVote && vote.isActive && (
-            <div className="mt-3 pt-3 border-t border-card-border flex justify-center">
+            <div className="mt-3 pt-3 border-t border-card-border">
               <Button
                 variant="destructive"
                 size="sm"
-                className="text-white"
+                className="w-full text-white"
               >
                 투표 지금 종료
               </Button>
