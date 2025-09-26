@@ -56,7 +56,7 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
       <Card className={`group hover:shadow-vote-card transition-all duration-300 border-card-border animate-slide-up ${
         vote.isMyVote ? 'bg-gradient-to-r from-primary/5 to-primary-light/10 border-primary/30 shadow-sm' : ''
       }`}>
-        <CardContent className="p-6">
+        <CardContent className="p-4">
           {/* Header */}
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">

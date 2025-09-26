@@ -101,7 +101,7 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-surface">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-surface-elevated/80 backdrop-blur-md border-b border-card-border">
-        <div className="container mx-auto px-4 py-4">
+        <div className="px-2 py-4">
           <div className="flex items-center gap-4">
             {/* Logo */}
             <div className="flex-shrink-0">
@@ -111,7 +111,7 @@ const Index = () => {
             </div>
             
             {/* Search */}
-            <div className="flex-1 max-w-md relative">
+            <div className="flex-1 max-w-sm relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="투표 검색..."
@@ -146,7 +146,7 @@ const Index = () => {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-6 pb-24">
+      <main className="px-2 py-4 pb-24">
         {/* Active Votes Section */}
         {activeVotes.length > 0 && (
           <section className="mb-8">
@@ -194,7 +194,7 @@ const Index = () => {
       </main>
 
       {/* Floating Action Button */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-4 right-4 z-50">
         <Button
           size="icon"
           className="h-14 w-14 rounded-full bg-gradient-primary hover:shadow-vote-card transition-all duration-300 hover:scale-105"
