@@ -101,8 +101,8 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-surface">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-surface-elevated/80 backdrop-blur-md border-b border-card-border">
-        <div className="px-2 py-4">
-          <div className="flex items-center gap-4">
+        <div className="px-3 py-3">
+          <div className="flex items-center gap-3">
             {/* Logo */}
             <div className="flex-shrink-0">
               <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
@@ -146,7 +146,7 @@ const Index = () => {
       </header>
 
       {/* Main Content */}
-      <main className="px-2 py-4 pb-24">
+      <main className="px-3 py-3 pb-20">
         {/* Active Votes Section */}
         {activeVotes.length > 0 && (
           <section className="mb-8">
@@ -154,7 +154,7 @@ const Index = () => {
               <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
               진행 중인 투표
             </h2>
-            <div className="space-y-4">
+            <div className="space-y-3">
               {activeVotes.map((vote) => (
                 <VoteCard key={vote.id} vote={vote} />
               ))}

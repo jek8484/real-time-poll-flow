@@ -56,9 +56,9 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
       <Card className={`group hover:shadow-vote-card transition-all duration-300 border-card-border animate-slide-up ${
         vote.isMyVote ? 'bg-gradient-to-r from-primary/5 to-primary-light/10 border-primary/30 shadow-sm' : ''
       }`}>
-        <CardContent className="p-4">
+        <CardContent className="p-3">
           {/* Header */}
-          <div className="flex items-start justify-between mb-4">
+          <div className="flex items-start justify-between mb-3">
             <div className="flex-1">
               <button
                 onClick={() => setShowModal(true)}
@@ -99,7 +99,7 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
           </div>
 
           {/* Vote Graph */}
-          <div className="mb-4">
+          <div className="mb-3">
             <VoteGraph 
               options={vote.options} 
               totalVotes={vote.totalVotes}
@@ -108,7 +108,7 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
           </div>
 
           {/* Vote Buttons */}
-          <div className="flex gap-2 mb-4">
+          <div className="flex gap-2 mb-3">
             {vote.options.map((option) => (
               <Button
                 key={option.id}
@@ -131,7 +131,7 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
           </div>
 
           {/* Time Status */}
-          <div className="flex items-center justify-center gap-2 mb-4 text-sm">
+          <div className="flex items-center justify-center gap-2 mb-3 text-sm">
             <Clock className="h-4 w-4 text-muted-foreground" />
             {vote.isActive ? (
               <span className="text-success font-medium">
