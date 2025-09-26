@@ -6,6 +6,7 @@ import { VoteCard } from "@/components/VoteCard";
 import { AdminMenu } from "@/components/AdminMenu";
 import { HiddenVotesModal } from "@/components/HiddenVotesModal";
 import { ReportsModal } from "@/components/ReportsModal";
+import { ChecklistModal } from "@/components/ChecklistModal";
 
 // Mock data for development
 const mockVotes = [
@@ -95,6 +96,7 @@ const Index = () => {
   const [showAdminMenu, setShowAdminMenu] = useState(false);
   const [showHiddenVotesModal, setShowHiddenVotesModal] = useState(false);
   const [showReportsModal, setShowReportsModal] = useState(false);
+  const [showChecklistModal, setShowChecklistModal] = useState(false);
 
   const activeVotes = mockVotes.filter(vote => vote.isActive);
   const endedVotes = mockVotes.filter(vote => !vote.isActive);
@@ -146,6 +148,10 @@ const Index = () => {
                   onOpenReports={() => {
                     setShowAdminMenu(false);
                     setShowReportsModal(true);
+                  }}
+                  onOpenChecklist={() => {
+                    setShowAdminMenu(false);
+                    setShowChecklistModal(true);
                   }}
                 />
               )}
@@ -222,6 +228,12 @@ const Index = () => {
       <ReportsModal
         isOpen={showReportsModal}
         onClose={() => setShowReportsModal(false)}
+      />
+
+      {/* Checklist Modal */}
+      <ChecklistModal
+        isOpen={showChecklistModal}
+        onClose={() => setShowChecklistModal(false)}
       />
     </div>
   );

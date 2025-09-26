@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Eye, Shield, X } from "lucide-react";
+import { Eye, Shield, X, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,9 +8,10 @@ interface AdminMenuProps {
   onClose: () => void;
   onOpenHiddenVotes: () => void;
   onOpenReports: () => void;
+  onOpenChecklist: () => void;
 }
 
-export const AdminMenu = ({ onClose, onOpenHiddenVotes, onOpenReports }: AdminMenuProps) => {
+export const AdminMenu = ({ onClose, onOpenHiddenVotes, onOpenReports, onOpenChecklist }: AdminMenuProps) => {
   const [adminPassword, setAdminPassword] = useState("");
 
   const handleHiddenVotes = () => {
@@ -47,6 +48,19 @@ export const AdminMenu = ({ onClose, onOpenHiddenVotes, onOpenReports }: AdminMe
               >
                 <Eye className="h-4 w-4 mr-2" />
                 내가 숨긴 투표 보기
+              </Button>
+
+              {/* 개발 체크리스트 */}
+              <Button
+                variant="outline"
+                className="w-full justify-start"
+                onClick={() => {
+                  onOpenChecklist();
+                  onClose();
+                }}
+              >
+                <CheckCircle className="h-4 w-4 mr-2" />
+                개발 체크리스트
               </Button>
 
               {/* 관리자 모드 */}
