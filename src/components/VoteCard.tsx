@@ -20,6 +20,7 @@ interface Vote {
   description?: string;
   totalVotes: number;
   endTime: Date;
+  startTime?: Date;
   isActive: boolean;
   isMyVote: boolean;
   isEarlyEnded?: boolean;
@@ -138,7 +139,7 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
               </span>
             ) : vote.isEarlyEnded ? (
               <span className="text-warning">
-                조기 종료됨 ({formatEndedTime(vote.earlyEndTime!, vote.originalEndTime!)})
+                조기 종료됨 ({formatEndedTime(vote.earlyEndTime!, vote.originalEndTime!, vote.startTime!)})
               </span>
             ) : (
               <span className="text-muted-foreground">

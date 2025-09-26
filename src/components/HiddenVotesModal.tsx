@@ -18,6 +18,7 @@ interface HiddenVote {
   description?: string;
   totalVotes: number;
   endTime: Date;
+  startTime?: Date;
   isActive: boolean;
   isMyVote: boolean;
   isEarlyEnded?: boolean;
@@ -77,6 +78,7 @@ const mockHiddenVotes: HiddenVote[] = [
     isEarlyEnded: true,
     earlyEndTime: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
     originalEndTime: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
+    startTime: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 - 3 * 60 * 60 * 1000), // 3시간 진행 후 종료
     options: [
       { id: "approve", name: "모던", votes: 89, color: "approve" as const },
       { id: "thinking", name: "고민 중", votes: 23, color: "thinking" as const },
@@ -222,7 +224,7 @@ export const HiddenVotesModal = ({ isOpen, onClose }: HiddenVotesModalProps) => 
                             </span>
                           ) : vote.isEarlyEnded ? (
                             <span className="text-warning">
-                              조기 종료됨 ({formatEndedTime(vote.earlyEndTime!, vote.originalEndTime!)})
+                              조기 종료됨 ({formatEndedTime(vote.earlyEndTime!, vote.originalEndTime!, vote.startTime!)})
                             </span>
                           ) : (
                             <span>

@@ -16,7 +16,7 @@ export const formatTimeRemaining = (endTime: Date): string => {
   }
 };
 
-export const formatEndedTime = (endTime: Date, originalEndTime?: Date): string => {
+export const formatEndedTime = (endTime: Date, originalEndTime?: Date, startTime?: Date): string => {
   const endDate = endTime.toLocaleDateString('ko-KR', {
     year: 'numeric',
     month: '2-digit',
@@ -27,20 +27,22 @@ export const formatEndedTime = (endTime: Date, originalEndTime?: Date): string =
     minute: '2-digit',
   });
   
-  if (originalEndTime) {
-    // Early ended
-    const timeDiff = originalEndTime.getTime() - endTime.getTime();
-    const hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
-    const minutesDiff = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+  if (originalEndTime && startTime) {
+    // Early ended - show actual duration
+    const actualDuration = endTime.getTime() - startTime.getTime();
+    const hoursDuration = Math.floor(actualDuration / (1000 * 60 * 60));
+    const minutesDuration = Math.floor((actualDuration % (1000 * 60 * 60)) / (1000 * 60));
     
-    let earlyText = "";
-    if (hoursDiff > 0) {
-      earlyText = `예정보다 ${hoursDiff}시간 ${minutesDiff}분 일찍`;
-    } else if (minutesDiff > 0) {
-      earlyText = `예정보다 ${minutesDiff}분 일찍`;
+    let durationText = "";
+    if (hoursDuration > 0) {
+      durationText = `${hoursDuration}시간 ${minutesDuration}분동안 투표 진행 했음`;
+    } else if (minutesDuration > 0) {
+      durationText = `${minutesDuration}분동안 투표 진행 했음`;
+    } else {
+      durationText = "투표 진행 후 바로 종료";
     }
     
-    return `${endDate} ${endTimeStr}, ${earlyText}`;
+    return `${endDate} ${endTimeStr}, ${durationText}`;
   }
   
   return `${endDate} 종료됨`;

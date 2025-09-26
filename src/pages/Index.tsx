@@ -49,6 +49,7 @@ const mockVotes = [
     isEarlyEnded: true,
     earlyEndTime: new Date(Date.now() - 2 * 60 * 60 * 1000),
     originalEndTime: new Date(Date.now() + 22 * 60 * 60 * 1000),
+    startTime: new Date(Date.now() - 4.67 * 60 * 60 * 1000), // 2시간 40분 전에 시작
     options: [
       { id: "approve", name: "찬성", votes: 178, color: "approve" as const },
       { id: "thinking", name: "고민 중", votes: 34, color: "thinking" as const },
