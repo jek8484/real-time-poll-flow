@@ -17,7 +17,7 @@ export const AdminMenu = ({ onClose, onOpenHiddenVotes }: AdminMenuProps) => {
   };
 
   const handleAdminLogin = () => {
-    if (adminPassword === "admin") {
+    if (adminPassword === "1") {
       console.log("관리자 모드 진입");
       onClose();
     } else {
