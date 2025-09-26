@@ -18,24 +18,33 @@ const fetchActiveVotes = async () => {
     .eq('status', 'active')
     .order('created_at', { ascending: false });
 
-  if (error) throw error;
+  if (error) {
+    console.error('Error fetching votes:', error);
+    throw error;
+  }
   
+  // Transform data to match VoteCard interface
   return data?.map(vote => ({
     id: vote.id.toString(),
-    title: vote.title || '',
+    title: vote.title || '제목 없음',
     description: vote.content || '',
-    totalVotes: vote.vote_count,
-    endTime: vote.expires_at ? new Date(vote.expires_at) : new Date(Date.now() + 24 * 60 * 60 * 1000), // Default 24h if no expiry
+    totalVotes: vote.vote_count || 0,
+    endTime: vote.expires_at ? new Date(vote.expires_at) : new Date(Date.now() + 24 * 60 * 60 * 1000),
     isActive: vote.status === 'active',
-    isMyVote: false, // TODO: implement user ownership check
-    options: Array.isArray(vote.options) ? vote.options.map((option: any) => ({
-      id: option.id.toString(),
-      name: option.name,
-      votes: option.vote_count || 0,
-      color: (option.color === '#10b981' ? 'approve' : 
-             option.color === '#ef4444' ? 'reject' : 'thinking') as "approve" | "thinking" | "reject"
-    })) : [],
-    myChoice: null // TODO: implement user choice tracking
+    isMyVote: false,
+    options: Array.isArray(vote.options) && vote.options.length > 0 ? 
+      vote.options.map((option: any, index: number) => ({
+        id: (option.id || index).toString(),
+        name: option.name || `옵션 ${index + 1}`,
+        votes: option.vote_count || 0,
+        color: index === 0 ? 'approve' as const : 
+               index === 1 ? 'thinking' as const : 'reject' as const
+      })) : [
+        { id: '1', name: '찬성', votes: 0, color: 'approve' as const },
+        { id: '2', name: '보류', votes: 0, color: 'thinking' as const },
+        { id: '3', name: '반대', votes: 0, color: 'reject' as const }
+      ],
+    myChoice: null
   })) || [];
 };
 
