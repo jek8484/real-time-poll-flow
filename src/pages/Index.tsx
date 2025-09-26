@@ -54,6 +54,21 @@ const mockVotes = [
     myChoice: "approve" as string | null
   },
   {
+    id: "5",
+    title: "회의실 에어컨 온도 설정",
+    description: "여름철 회의실 적정 온도에 대한 투표입니다.",
+    totalVotes: 42,
+    endTime: new Date(Date.now() + 3 * 60 * 60 * 1000), // 3 hours from now
+    isActive: true,
+    isMyVote: false,
+    options: [
+      { id: "approve", name: "22도", votes: 42, color: "approve" as const },
+      { id: "thinking", name: "고민 중", votes: 0, color: "thinking" as const },
+      { id: "reject", name: "26도", votes: 0, color: "reject" as const }
+    ],
+    myChoice: null
+  },
+  {
     id: "3",
     title: "회사 점심시간 연장 건에 대한 의견",
     description: "현재 1시간인 점심시간을 1시간 30분으로 연장하는 것에 대한 의견을 구합니다.",
