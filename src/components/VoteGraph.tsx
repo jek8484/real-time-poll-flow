@@ -73,14 +73,6 @@ export const VoteGraph = ({ options, totalVotes, winningOption }: VoteGraphProps
         </div>
       </div>
 
-      {/* Winning indicator */}
-      {totalVotes > 0 && (
-        <div className="absolute -top-2 left-0 right-0 flex justify-center">
-          <div className="bg-gradient-primary text-white text-xs px-2 py-1 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            {winningOption.name} 우세 ({Math.round((winningOption.votes / totalVotes) * 100)}%)
-          </div>
-        </div>
-      )}
     </div>
   );
 };
