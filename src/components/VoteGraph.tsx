@@ -14,9 +14,9 @@ interface VoteGraphProps {
 export const VoteGraph = ({ options, totalVotes, winningOption }: VoteGraphProps) => {
   const getColorClasses = (color: string, isWinning: boolean) => {
     const baseClasses = {
-      approve: isWinning ? 'bg-vote-approve text-white' : 'bg-vote-approve-light text-vote-approve',
-      thinking: isWinning ? 'bg-vote-thinking text-white' : 'bg-vote-thinking-light text-vote-thinking',
-      reject: isWinning ? 'bg-vote-reject text-white' : 'bg-vote-reject-light text-vote-reject',
+      approve: isWinning ? 'bg-vote-approve text-white shadow-lg border border-vote-approve/30' : 'bg-vote-approve-light text-vote-approve',
+      thinking: isWinning ? 'bg-vote-thinking text-white shadow-lg border border-vote-thinking/30' : 'bg-vote-thinking-light text-vote-thinking',
+      reject: isWinning ? 'bg-vote-reject text-white shadow-lg border border-vote-reject/30' : 'bg-vote-reject-light text-vote-reject',
     };
     return baseClasses[color as keyof typeof baseClasses];
   };
@@ -36,7 +36,7 @@ export const VoteGraph = ({ options, totalVotes, winningOption }: VoteGraphProps
                 className={`
                   relative h-full transition-all duration-800 ease-out animate-vote-flow
                   ${getColorClasses(option.color, isWinning)}
-                  ${isWinning ? 'shadow-md' : ''}
+                  ${isWinning ? 'shadow-md animate-pulse' : ''}
                 `}
                 style={{ 
                   width: `${percentage}%`,
@@ -47,10 +47,12 @@ export const VoteGraph = ({ options, totalVotes, winningOption }: VoteGraphProps
                 {percentage > 15 && (
                   <div className="absolute inset-0 flex items-center justify-center px-2">
                     <div className="text-center">
-                      <div className={`text-xs font-medium ${isWinning ? 'font-bold' : ''}`}>
+                      <div className={`text-xs font-medium ${isWinning ? 'font-bold' : ''} flex items-center justify-center gap-1`}>
+                        {isWinning && <span className="text-yellow-300">🏆</span>}
                         {option.name}
+                        {isWinning && <span className="text-xs bg-white/20 px-1 rounded">1위</span>}
                       </div>
-                      <div className={`text-xs ${isWinning ? 'font-bold' : 'opacity-90'}`}>
+                      <div className={`text-xs ${isWinning ? 'font-bold text-white' : 'opacity-90'}`}>
                         {Math.round(percentage)}%
                       </div>
                     </div>
