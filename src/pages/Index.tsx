@@ -44,7 +44,7 @@ const mockVotes = [
     title: "회의실 에어컨 온도 설정",
     description: "여름철 회의실 적정 온도에 대한 투표입니다.",
     totalVotes: 100,
-    endTime: new Date(Date.now() + 3 * 60 * 60 * 1000), // 3 hours from now
+    endTime: new Date(Date.now() + 59 * 1000), // 59 seconds from now
     isActive: true,
     isMyVote: false,
     options: [
