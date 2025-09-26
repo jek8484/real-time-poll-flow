@@ -10,21 +10,63 @@ import { ReportsModal } from "@/components/ReportsModal";
 import { ChecklistModal } from "@/components/ChecklistModal";
 import { supabase } from "@/integrations/supabase/client";
 
-// Fetch active votes that are not hidden and have less than 5 reports
+// Fetch active votes that are not hidden and have less than threshold reports
 const fetchActiveVotes = async () => {
-  const { data, error } = await supabase
+  const reportThreshold = 5; // TODO: Get from admin_settings table when types are updated
+
+  // Get active votes ordered by expires_at descending
+  const { data: votes, error: votesError } = await supabase
     .from('votes')
     .select('*')
     .eq('status', 'active')
-    .order('created_at', { ascending: false });
+    .order('expires_at', { ascending: false });
 
-  if (error) {
-    console.error('Error fetching votes:', error);
-    throw error;
+  if (votesError) {
+    console.error('Error fetching votes:', votesError);
+    throw votesError;
   }
+
+  if (!votes || votes.length === 0) {
+    return [];
+  }
+
+  // Get hidden votes for current user (if authenticated)
+  const { data: hiddenVotes } = await supabase
+    .from('hidden_votes')
+    .select('vote_id');
+
+  const hiddenVoteIds = new Set(hiddenVotes?.map(hv => hv.vote_id) || []);
+
+  // Get report counts for all votes
+  const { data: reportCounts } = await supabase
+    .from('reports')
+    .select('vote_id')
+    .in('vote_id', votes.map(v => v.id));
+
+  const reportCountMap = new Map();
+  reportCounts?.forEach(report => {
+    const count = reportCountMap.get(report.vote_id) || 0;
+    reportCountMap.set(report.vote_id, count + 1);
+  });
+
+  // Filter votes based on conditions
+  const filteredVotes = votes.filter(vote => {
+    // Skip hidden votes
+    if (hiddenVoteIds.has(vote.id)) {
+      return false;
+    }
+    
+    // Skip votes with reports >= threshold
+    const reportCount = reportCountMap.get(vote.id) || 0;
+    if (reportCount >= reportThreshold) {
+      return false;
+    }
+    
+    return true;
+  });
   
   // Transform data to match VoteCard interface
-  return data?.map(vote => ({
+  return filteredVotes.map(vote => ({
     id: vote.id.toString(),
     title: vote.title || '제목 없음',
     description: vote.content || '',
@@ -45,7 +87,7 @@ const fetchActiveVotes = async () => {
         { id: '3', name: '반대', votes: 0, color: 'reject' as const }
       ],
     myChoice: null
-  })) || [];
+  }));
 };
 
 const Index = () => {
