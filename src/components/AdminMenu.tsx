@@ -3,16 +3,15 @@ import { Eye, Shield, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { ReportsModal } from "./ReportsModal";
 
 interface AdminMenuProps {
   onClose: () => void;
   onOpenHiddenVotes: () => void;
+  onOpenReports: () => void;
 }
 
-export const AdminMenu = ({ onClose, onOpenHiddenVotes }: AdminMenuProps) => {
+export const AdminMenu = ({ onClose, onOpenHiddenVotes, onOpenReports }: AdminMenuProps) => {
   const [adminPassword, setAdminPassword] = useState("");
-  const [showReportsModal, setShowReportsModal] = useState(false);
 
   const handleHiddenVotes = () => {
     onOpenHiddenVotes();
@@ -20,7 +19,7 @@ export const AdminMenu = ({ onClose, onOpenHiddenVotes }: AdminMenuProps) => {
 
   const handleAdminLogin = () => {
     console.log("관리자 모드 진입");
-    setShowReportsModal(true);
+    onOpenReports();
     onClose();
   };
 
@@ -76,12 +75,6 @@ export const AdminMenu = ({ onClose, onOpenHiddenVotes }: AdminMenuProps) => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Reports Modal */}
-      <ReportsModal
-        isOpen={showReportsModal}
-        onClose={() => setShowReportsModal(false)}
-      />
     </div>
   );
 };

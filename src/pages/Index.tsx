@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { VoteCard } from "@/components/VoteCard";
 import { AdminMenu } from "@/components/AdminMenu";
 import { HiddenVotesModal } from "@/components/HiddenVotesModal";
+import { ReportsModal } from "@/components/ReportsModal";
 
 // Mock data for development
 const mockVotes = [
@@ -108,6 +109,7 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showAdminMenu, setShowAdminMenu] = useState(false);
   const [showHiddenVotesModal, setShowHiddenVotesModal] = useState(false);
+  const [showReportsModal, setShowReportsModal] = useState(false);
 
   const activeVotes = mockVotes.filter(vote => vote.isActive);
   const endedVotes = mockVotes.filter(vote => !vote.isActive);
@@ -152,6 +154,10 @@ const Index = () => {
                   onOpenHiddenVotes={() => {
                     setShowAdminMenu(false);
                     setShowHiddenVotesModal(true);
+                  }}
+                  onOpenReports={() => {
+                    setShowAdminMenu(false);
+                    setShowReportsModal(true);
                   }}
                 />
               )}
@@ -222,6 +228,12 @@ const Index = () => {
       <HiddenVotesModal
         isOpen={showHiddenVotesModal}
         onClose={() => setShowHiddenVotesModal(false)}
+      />
+
+      {/* Reports Modal */}
+      <ReportsModal
+        isOpen={showReportsModal}
+        onClose={() => setShowReportsModal(false)}
       />
     </div>
   );
