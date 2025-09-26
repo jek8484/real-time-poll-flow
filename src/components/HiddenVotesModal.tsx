@@ -246,8 +246,8 @@ export const HiddenVotesModal = ({ isOpen, onClose }: HiddenVotesModalProps) => 
                       </div>
 
                       {/* Status and Time */}
-                      <div className="flex items-center justify-end text-sm">
-                        <div className="text-muted-foreground">
+                      <div className="flex items-center justify-center text-sm">
+                        <div className="text-muted-foreground text-center">
                           {vote.isActive ? (
                             <span className="text-success font-medium">
                               {formatTimeRemaining(vote.endTime)}
