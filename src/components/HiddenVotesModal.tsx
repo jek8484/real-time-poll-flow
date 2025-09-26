@@ -37,55 +37,104 @@ interface HiddenVotesModalProps {
 // Mock data for hidden votes
 const mockHiddenVotes: HiddenVote[] = [
   {
-    id: "hidden-1",
-    title: "오늘 점심 메뉴 추천해주세요",
-    description: "회사 근처 맛집 중에서 선택해주세요.",
-    totalVotes: 45,
-    endTime: new Date(Date.now() - 30 * 60 * 1000),
-    isActive: false,
+    id: "1",
+    title: "주말에 치킨 vs 피자, 어떤 걸 먹을까요?",
+    description: "친구들과 함께 먹을 음식을 고민 중입니다!",
+    totalVotes: 127,
+    endTime: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 hours from now
+    isActive: true,
     isMyVote: false,
     options: [
-      { id: "approve", name: "한식", votes: 20, color: "approve" as const },
-      { id: "thinking", name: "고민 중", votes: 8, color: "thinking" as const },
-      { id: "reject", name: "양식", votes: 17, color: "reject" as const }
+      { id: "approve", name: "치킨", votes: 78, color: "approve" as const },
+      { id: "thinking", name: "고민 중", votes: 23, color: "thinking" as const },
+      { id: "reject", name: "피자", votes: 26, color: "reject" as const }
     ],
     myChoice: "approve",
-    hiddenAt: new Date(Date.now() - 2 * 60 * 60 * 1000)
+    hiddenAt: new Date(Date.now() - 1 * 60 * 60 * 1000)
   },
   {
-    id: "hidden-2",
-    title: "주말 야구 경기 관람, 어떻게 생각하세요?",
-    description: "팀 단합을 위한 야구 관람 이벤트입니다.",
-    totalVotes: 78,
-    endTime: new Date(Date.now() + 3 * 60 * 60 * 1000),
+    id: "2",
+    title: "새로운 프로젝트 시작, 어떤 기술 스택을 사용할까요?",
+    description: "팀에서 새로운 웹 애플리케이션을 개발할 예정입니다.",
+    totalVotes: 89,
+    endTime: new Date(Date.now() + 5 * 60 * 60 * 1000), // 5 hours from now
     isActive: true,
     isMyVote: true,
     options: [
-      { id: "approve", name: "참석", votes: 42, color: "approve" as const },
-      { id: "thinking", name: "고민 중", votes: 15, color: "thinking" as const },
-      { id: "reject", name: "불참", votes: 21, color: "reject" as const }
+      { id: "approve", name: "React + TypeScript", votes: 52, color: "approve" as const },
+      { id: "thinking", name: "고민 중", votes: 12, color: "thinking" as const },
+      { id: "reject", name: "Vue.js", votes: 25, color: "reject" as const }
     ],
     myChoice: null,
-    hiddenAt: new Date(Date.now() - 4 * 60 * 60 * 1000)
+    hiddenAt: new Date(Date.now() - 2 * 60 * 60 * 1000)
   },
   {
-    id: "hidden-3",
-    title: "새로운 사무실 인테리어 컨셉",
-    totalVotes: 156,
-    endTime: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+    id: "4",
+    title: "오늘 저녁 야근 후 간식 투표",
+    description: "늦은 시간까지 고생하는 팀원들을 위한 간식을 준비하려고 합니다.",
+    totalVotes: 34,
+    endTime: new Date(Date.now() + 59 * 1000), // 59 seconds from now
+    isActive: true,
+    isMyVote: true,
+    options: [
+      { id: "approve", name: "떡볶이", votes: 12, color: "approve" as const },
+      { id: "thinking", name: "고민 중", votes: 3, color: "thinking" as const },
+      { id: "reject", name: "햄버거", votes: 19, color: "reject" as const }
+    ],
+    myChoice: "approve",
+    hiddenAt: new Date(Date.now() - 30 * 60 * 1000)
+  },
+  {
+    id: "5",
+    title: "회의실 에어컨 온도 설정",
+    description: "여름철 회의실 적정 온도에 대한 투표입니다.",
+    totalVotes: 100,
+    endTime: new Date(Date.now() + 3 * 60 * 60 * 1000), // 3 hours from now
+    isActive: true,
+    isMyVote: false,
+    options: [
+      { id: "approve", name: "22도", votes: 98, color: "approve" as const },
+      { id: "thinking", name: "고민 중", votes: 1, color: "thinking" as const },
+      { id: "reject", name: "26도", votes: 1, color: "reject" as const }
+    ],
+    myChoice: null,
+    hiddenAt: new Date(Date.now() - 45 * 60 * 1000)
+  },
+  {
+    id: "3",
+    title: "회사 점심시간 연장 건에 대한 의견",
+    description: "현재 1시간인 점심시간을 1시간 30분으로 연장하는 것에 대한 의견을 구합니다.",
+    totalVotes: 245,
+    endTime: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago (ended)
     isActive: false,
     isMyVote: false,
     isEarlyEnded: true,
-    earlyEndTime: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-    originalEndTime: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
-    startTime: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 - 3 * 60 * 60 * 1000), // 3시간 진행 후 종료
+    earlyEndTime: new Date(Date.now() - 2 * 60 * 60 * 1000),
+    originalEndTime: new Date(Date.now() + 22 * 60 * 60 * 1000),
+    startTime: new Date(Date.now() - 4.67 * 60 * 60 * 1000), // 2시간 40분 전에 시작
     options: [
-      { id: "approve", name: "모던", votes: 89, color: "approve" as const },
-      { id: "thinking", name: "고민 중", votes: 23, color: "thinking" as const },
-      { id: "reject", name: "클래식", votes: 44, color: "reject" as const }
+      { id: "approve", name: "찬성", votes: 178, color: "approve" as const },
+      { id: "thinking", name: "고민 중", votes: 34, color: "thinking" as const },
+      { id: "reject", name: "반대", votes: 33, color: "reject" as const }
     ],
-    myChoice: "reject",
-    hiddenAt: new Date(Date.now() - 6 * 60 * 60 * 1000)
+    myChoice: "approve",
+    hiddenAt: new Date(Date.now() - 3 * 60 * 60 * 1000)
+  },
+  {
+    id: "6",
+    title: "사무실 간식 자판기 설치 위치",
+    description: "새로 설치할 간식 자판기의 최적 위치를 선택해주세요.",
+    totalVotes: 156,
+    endTime: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 hours ago (normally ended)
+    isActive: false,
+    isMyVote: false,
+    options: [
+      { id: "approve", name: "휴게실", votes: 89, color: "approve" as const },
+      { id: "thinking", name: "고민 중", votes: 23, color: "thinking" as const },
+      { id: "reject", name: "로비", votes: 44, color: "reject" as const }
+    ],
+    myChoice: null,
+    hiddenAt: new Date(Date.now() - 1.5 * 60 * 60 * 1000)
   }
 ];
 
