@@ -86,6 +86,21 @@ const mockVotes = [
       { id: "reject", name: "반대", votes: 33, color: "reject" as const }
     ],
     myChoice: "approve" as string | null
+  },
+  {
+    id: "6",
+    title: "사무실 간식 자판기 설치 위치",
+    description: "새로 설치할 간식 자판기의 최적 위치를 선택해주세요.",
+    totalVotes: 156,
+    endTime: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 hours ago (normally ended)
+    isActive: false,
+    isMyVote: false,
+    options: [
+      { id: "approve", name: "휴게실", votes: 89, color: "approve" as const },
+      { id: "thinking", name: "고민 중", votes: 23, color: "thinking" as const },
+      { id: "reject", name: "로비", votes: 44, color: "reject" as const }
+    ],
+    myChoice: null
   }
 ];
 
