@@ -71,30 +71,32 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
                   <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                 </div>
               </button>
-              <div className="flex items-center gap-1 mt-2 text-sm text-muted-foreground">
-                <Users className="h-4 w-4" />
-                <span>총 {vote.totalVotes}명 참여</span>
-              </div>
-            </div>
-
-            {/* Kebab Menu */}
-            <div className="relative">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setShowActions(!showActions)}
-                className="h-8 w-8 hover:bg-surface"
-              >
-                <MoreVertical className="h-4 w-4" />
-              </Button>
-              {showActions && (
-                <div className="absolute right-0 top-10 z-50">
-                  <VoteActions 
-                    vote={vote} 
-                    onClose={() => setShowActions(false)} 
-                  />
+              <div className="flex items-center justify-between mt-2 text-sm text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <Users className="h-4 w-4" />
+                  <span>총 {vote.totalVotes}명 참여</span>
                 </div>
-              )}
+                
+                {/* Kebab Menu */}
+                <div className="relative">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setShowActions(!showActions)}
+                    className="h-8 w-8 hover:bg-surface"
+                  >
+                    <MoreVertical className="h-4 w-4" />
+                  </Button>
+                  {showActions && (
+                    <div className="absolute right-0 top-10 z-50">
+                      <VoteActions 
+                        vote={vote} 
+                        onClose={() => setShowActions(false)} 
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 
