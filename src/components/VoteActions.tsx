@@ -70,41 +70,41 @@ export const VoteActions = ({ vote, onClose }: VoteActionsProps) => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="w-full justify-start"
+                className="w-full justify-start gap-3 px-3"
                 onClick={handleQRCode}
               >
-                <QrCode className="h-4 w-4 mr-2" />
-                QR코드
+                <QrCode className="h-4 w-4 flex-shrink-0" />
+                <span>QR코드</span>
               </Button>
 
               <Button
                 variant="ghost"
                 size="sm"
-                className="w-full justify-start"
+                className="w-full justify-start gap-3 px-3"
                 onClick={handleShare}
               >
-                <Share className="h-4 w-4 mr-2" />
-                공유하기
+                <Share className="h-4 w-4 flex-shrink-0" />
+                <span>공유하기</span>
               </Button>
 
               <Button
                 variant="ghost"
                 size="sm"
-                className="w-full justify-start"
+                className="w-full justify-start gap-3 px-3"
                 onClick={handleHide}
               >
-                <EyeOff className="h-4 w-4 mr-2" />
-                숨기기
+                <EyeOff className="h-4 w-4 flex-shrink-0" />
+                <span>숨기기</span>
               </Button>
 
               <Button
                 variant="ghost"
                 size="sm"
-                className="w-full justify-start text-warning hover:text-warning-foreground hover:bg-warning/10"
+                className="w-full justify-start gap-3 px-3 text-warning hover:text-warning-foreground hover:bg-warning/10"
                 onClick={handleReport}
               >
-                <Flag className="h-4 w-4 mr-2" />
-                신고하기
+                <Flag className="h-4 w-4 flex-shrink-0" />
+                <span>신고하기</span>
               </Button>
 
               {/* 내 투표에만 표시 */}
@@ -113,11 +113,11 @@ export const VoteActions = ({ vote, onClose }: VoteActionsProps) => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="w-full justify-start text-destructive hover:text-destructive-foreground hover:bg-destructive/10"
+                    className="w-full justify-start gap-3 px-3 text-destructive hover:text-destructive-foreground hover:bg-destructive/10"
                     onClick={handleDelete}
                   >
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    삭제하기
+                    <Trash2 className="h-4 w-4 flex-shrink-0" />
+                    <span>삭제하기</span>
                   </Button>
                 </div>
               )}
