@@ -228,10 +228,10 @@ export const VoteCreateModal = ({ isOpen, onClose, onVoteCreated }: VoteCreateMo
             )}
             
             {(duration && (duration !== "custom" || (duration === "custom" && customMinutes))) && (
-              <div className="text-sm text-muted-foreground space-y-1 p-3 bg-muted/50 rounded-md">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
+              <div className="text-sm text-muted-foreground space-y-1 p-3 bg-muted/50 rounded-md text-right">
+                <div className="flex items-center gap-2 justify-end">
                   <span className="font-medium">시간 설정</span>
+                  <Clock className="h-4 w-4" />
                 </div>
                 <div>시작시간: {format(new Date(), "PPP p", { locale: ko })}</div>
                 <div>종료시간: {format(getEndTime(), "PPP p", { locale: ko })}</div>
