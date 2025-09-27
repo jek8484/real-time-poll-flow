@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { VoteGraph } from "./VoteGraph";
 import { formatTimeRemaining, formatEndedTime } from "@/lib/time-utils";
+import { useState } from "react";
 
 interface VoteOption {
   id: string;
@@ -14,6 +15,7 @@ interface VoteOption {
 
 interface Vote {
   id: string;
+  dbId: number; // 데이터베이스 ID 추가
   title: string;
   description?: string;
   totalVotes: number;
@@ -36,6 +38,8 @@ interface VoteModalProps {
 }
 
 export const VoteModal = ({ vote, isOpen, onClose, onVote }: VoteModalProps) => {
+  const [isVoting, setIsVoting] = useState(false);
+  
   if (!isOpen) return null;
 
   const getWinningOption = () => {
@@ -45,6 +49,16 @@ export const VoteModal = ({ vote, isOpen, onClose, onVote }: VoteModalProps) => 
   };
 
   const winningOption = getWinningOption();
+
+  const handleVoteClick = async (optionId: string) => {
+    if (isVoting) return;
+    setIsVoting(true);
+    try {
+      await onVote(optionId);
+    } finally {
+      setIsVoting(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
@@ -129,16 +143,16 @@ export const VoteModal = ({ vote, isOpen, onClose, onVote }: VoteModalProps) => 
                   key={option.id}
                   variant={vote.myChoice === option.id ? "default" : "outline"}
                   size="lg"
-                  onClick={() => onVote(option.id)}
-                  disabled={!vote.isActive}
+                  onClick={() => handleVoteClick(option.id)}
+                  disabled={!vote.isActive || isVoting}
                   className={`w-full justify-between text-base py-3 ${
                     vote.myChoice === option.id 
                       ? `bg-vote-${option.color} hover:bg-vote-${option.color} text-white font-semibold`
                       : `hover:bg-vote-${option.color}-light hover:border-vote-${option.color} transition-all duration-200`
                   }`}
                 >
-                  <span>{option.name}</span>
-                  {vote.myChoice === option.id && (
+                  <span>{isVoting ? "처리 중..." : option.name}</span>
+                  {vote.myChoice === option.id && !isVoting && (
                     <Check className="h-4 w-4" />
                   )}
                 </Button>

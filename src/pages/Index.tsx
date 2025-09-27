@@ -72,6 +72,7 @@ const fetchActiveVotes = async () => {
   // Transform data to match VoteCard interface
   return filteredVotes.map(vote => ({
     id: vote.id.toString(),
+    dbId: vote.id, // 데이터베이스 ID 추가
     title: vote.title || '제목 없음',
     description: vote.content || '',
     totalVotes: vote.vote_count || 0,
@@ -104,7 +105,7 @@ const Index = () => {
 
   // Fetch active votes with filtering
   const { data: votes = [], isLoading, error, refetch } = useQuery({
-    queryKey: ['active-votes'],
+    queryKey: ['votes'],
     queryFn: fetchActiveVotes,
     refetchInterval: 30000, // Refetch every 30 seconds
   });

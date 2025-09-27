@@ -6,6 +6,9 @@ import { VoteGraph } from "./VoteGraph";
 import { VoteActions } from "./VoteActions";
 import { VoteModal } from "./VoteModal";
 import { formatTimeRemaining, formatEndedTime } from "@/lib/time-utils";
+import { castVote, cancelVote } from "@/lib/vote-utils";
+import { useToast } from "@/hooks/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface VoteOption {
   id: string;
@@ -16,6 +19,7 @@ interface VoteOption {
 
 interface Vote {
   id: string;
+  dbId: number; // 데이터베이스 ID 추가
   title: string;
   description?: string;
   totalVotes: number;
@@ -39,13 +43,44 @@ export const VoteCard = ({ vote, onVoteDeleted }: VoteCardProps) => {
   const [showModal, setShowModal] = useState(false);
   const [showActions, setShowActions] = useState(false);
   const [currentChoice, setCurrentChoice] = useState<string | null>(vote.myChoice);
+  const [isVoting, setIsVoting] = useState(false);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-  const handleVote = (optionId: string) => {
-    // 이미 같은 옵션을 선택했다면 선택 취소
-    if (currentChoice === optionId) {
-      setCurrentChoice(null);
-    } else {
-      setCurrentChoice(optionId);
+  const handleVote = async (optionId: string) => {
+    if (isVoting) return; // 중복 요청 방지
+    
+    setIsVoting(true);
+    try {
+      // 이미 같은 옵션을 선택했다면 선택 취소
+      if (currentChoice === optionId) {
+        await cancelVote(vote.dbId);
+        setCurrentChoice(null);
+        toast({ title: "투표가 취소되었습니다." });
+      } else {
+        // 옵션 인덱스 찾기
+        const optionIndex = vote.options.findIndex(opt => opt.id === optionId);
+        if (optionIndex === -1) {
+          throw new Error('잘못된 옵션입니다.');
+        }
+        
+        await castVote(vote.dbId, optionIndex);
+        setCurrentChoice(optionId);
+        toast({ title: "투표가 완료되었습니다." });
+      }
+      
+      // 투표 목록 새로고침
+      queryClient.invalidateQueries({ queryKey: ['votes'] });
+    } catch (error) {
+      console.error('투표 오류:', error);
+      toast({ 
+        title: "투표 중 오류가 발생했습니다.", 
+        variant: "destructive" 
+      });
+      // 에러 시 상태 복원
+      setCurrentChoice(vote.myChoice);
+    } finally {
+      setIsVoting(false);
     }
   };
 
@@ -126,15 +161,15 @@ export const VoteCard = ({ vote, onVoteDeleted }: VoteCardProps) => {
                 variant={currentChoice === option.id ? "default" : "outline"}
                 size="sm"
                 onClick={() => handleVote(option.id)}
-                disabled={!vote.isActive}
+                disabled={!vote.isActive || isVoting}
                 className={`flex-1 ${
                   currentChoice === option.id 
                     ? `bg-vote-${option.color} hover:bg-vote-${option.color} text-white`
                     : `hover:bg-vote-${option.color}-light hover:border-vote-${option.color}`
                 } transition-all duration-200`}
               >
-                <span>{option.name}</span>
-                {currentChoice === option.id && (
+                <span>{isVoting ? "처리 중..." : option.name}</span>
+                {currentChoice === option.id && !isVoting && (
                   <Check className="h-4 w-4 ml-2" />
                 )}
               </Button>
