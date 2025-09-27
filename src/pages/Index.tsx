@@ -10,10 +10,14 @@ import { HiddenVotesModal } from "@/components/HiddenVotesModal";
 import { ReportsModal } from "@/components/ReportsModal";
 import { ChecklistModal } from "@/components/ChecklistModal";
 import { supabase } from "@/integrations/supabase/client";
+import { getCurrentUser } from "@/lib/device-utils";
 
 // Fetch active votes that are not hidden and have less than threshold reports
 const fetchActiveVotes = async () => {
   const reportThreshold = 5; // TODO: Get from admin_settings table when types are updated
+  
+  // 현재 사용자 정보 가져오기
+  const currentUser = await getCurrentUser();
 
   // Get active votes ordered by expires_at descending
   const { data: votes, error: votesError } = await supabase
@@ -74,7 +78,7 @@ const fetchActiveVotes = async () => {
     totalVotes: vote.vote_count || 0,
     endTime: vote.expires_at ? new Date(vote.expires_at) : new Date(Date.now() + 24 * 60 * 60 * 1000),
     isActive: vote.status === 'active',
-    isMyVote: vote.creator_id === null, // 임시: creator_id가 없는 투표를 내 투표로 간주
+    isMyVote: currentUser && vote.creator_id === currentUser.id,
     options: Array.isArray(vote.options) && vote.options.length > 0 ? 
       vote.options.map((option: any, index: number) => ({
         id: (option.id || index).toString(),
@@ -205,7 +209,11 @@ const Index = () => {
             </h2>
             <div className="space-y-3">
               {filteredVotes.map((vote) => (
-                <VoteCard key={vote.id} vote={vote} />
+                <VoteCard 
+                  key={vote.id} 
+                  vote={vote} 
+                  onVoteDeleted={() => refetch()}
+                />
               ))}
             </div>
           </section>

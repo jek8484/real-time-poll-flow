@@ -32,9 +32,10 @@ interface Vote {
 
 interface VoteCardProps {
   vote: Vote;
+  onVoteDeleted?: () => void;
 }
 
-export const VoteCard = ({ vote }: VoteCardProps) => {
+export const VoteCard = ({ vote, onVoteDeleted }: VoteCardProps) => {
   const [showModal, setShowModal] = useState(false);
   const [showActions, setShowActions] = useState(false);
 
@@ -91,7 +92,8 @@ export const VoteCard = ({ vote }: VoteCardProps) => {
                     <div className="absolute right-0 top-10 z-50">
                       <VoteActions 
                         vote={vote} 
-                        onClose={() => setShowActions(false)} 
+                        onClose={() => setShowActions(false)}
+                        onVoteDeleted={onVoteDeleted}
                       />
                     </div>
                   )}

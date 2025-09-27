@@ -11,6 +11,7 @@ import { ko } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { getCurrentUser } from "@/lib/device-utils";
 
 interface VoteCreateModalProps {
   isOpen: boolean;
@@ -119,12 +120,20 @@ export const VoteCreateModal = ({ isOpen, onClose, onVoteCreated }: VoteCreateMo
     setIsSubmitting(true);
 
     try {
+      // 현재 사용자 정보 가져오기
+      const currentUser = await getCurrentUser();
+      if (!currentUser) {
+        toast.error("사용자 정보를 가져올 수 없습니다.");
+        return;
+      }
+
       const { error } = await supabase
         .from('votes')
         .insert({
           title: title.trim(),
           content: description.trim() || null,
           expires_at: getEndTime().toISOString(),
+          creator_id: currentUser.id,
           options: validOptions.map(opt => ({
             name: opt.name.trim(),
             vote_count: 0

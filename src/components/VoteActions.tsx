@@ -1,6 +1,8 @@
 import { QrCode, Share, EyeOff, Flag, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface Vote {
   id: string;
@@ -11,9 +13,10 @@ interface Vote {
 interface VoteActionsProps {
   vote: Vote;
   onClose: () => void;
+  onVoteDeleted?: () => void;
 }
 
-export const VoteActions = ({ vote, onClose }: VoteActionsProps) => {
+export const VoteActions = ({ vote, onClose, onVoteDeleted }: VoteActionsProps) => {
   const handleQRCode = () => {
     console.log("QR코드 보기:", vote.id);
     onClose();
@@ -43,10 +46,27 @@ export const VoteActions = ({ vote, onClose }: VoteActionsProps) => {
     onClose();
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (confirm("정말로 이 투표를 삭제하시겠습니까?")) {
-      console.log("투표 삭제:", vote.id);
-      onClose();
+      try {
+        const { error } = await supabase
+          .from('votes')
+          .delete()
+          .eq('id', parseInt(vote.id));
+
+        if (error) {
+          console.error('Error deleting vote:', error);
+          toast.error("투표 삭제에 실패했습니다.");
+          return;
+        }
+
+        toast.success("투표가 성공적으로 삭제되었습니다.");
+        onClose();
+        onVoteDeleted?.();
+      } catch (error) {
+        console.error('Error deleting vote:', error);
+        toast.error("투표 삭제에 실패했습니다.");
+      }
     }
   };
 
