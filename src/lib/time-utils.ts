@@ -24,7 +24,7 @@ export const formatEndedTime = (endTime: Date, originalEndTime?: Date, startTime
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
-  });
+  }).replace(/\//g, '.');
   const endTimeStr = endTime.toLocaleTimeString('ko-KR', {
     hour: '2-digit',
     minute: '2-digit',
@@ -48,5 +48,5 @@ export const formatEndedTime = (endTime: Date, originalEndTime?: Date, startTime
     return `${endDate} ${endTimeStr}, ${durationText}`;
   }
   
-  return `${endDate} ${endTimeStr}에 종료됨`;
+  return `${endDate} ${endTimeStr} 종료`;
 };
