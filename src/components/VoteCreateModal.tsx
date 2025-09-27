@@ -4,10 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, Plus, X } from "lucide-react";
-import { format } from "date-fns";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Clock, X } from "lucide-react";
+import { format, addMinutes } from "date-fns";
 import { ko } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,13 +26,55 @@ interface VoteOption {
 export const VoteCreateModal = ({ isOpen, onClose, onVoteCreated }: VoteCreateModalProps) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [endDate, setEndDate] = useState<Date>();
+  const [duration, setDuration] = useState<string>("");
+  const [customMinutes, setCustomMinutes] = useState<string>("");
+  const [isCustomInput, setIsCustomInput] = useState(false);
   const [options, setOptions] = useState<VoteOption[]>([
     { id: "1", name: "찬성" },
     { id: "2", name: "보류" },
     { id: "3", name: "반대" }
   ]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const timeOptions = [
+    { value: "5", label: "5분" },
+    { value: "10", label: "10분" },
+    { value: "15", label: "15분" },
+    { value: "30", label: "30분" },
+    { value: "60", label: "1시간" },
+    { value: "180", label: "3시간" },
+    { value: "1440", label: "1일" },
+    { value: "4320", label: "3일" },
+    { value: "custom", label: "직접입력" }
+  ];
+
+  const handleDurationChange = (value: string) => {
+    setDuration(value);
+    setIsCustomInput(value === "custom");
+    if (value !== "custom") {
+      setCustomMinutes("");
+    }
+  };
+
+  const getEndTime = () => {
+    const now = new Date();
+    let minutes = 0;
+    
+    if (duration === "custom") {
+      minutes = parseInt(customMinutes) || 0;
+    } else {
+      minutes = parseInt(duration) || 0;
+    }
+    
+    return addMinutes(now, minutes);
+  };
+
+  const getMinutesForDuration = () => {
+    if (duration === "custom") {
+      return parseInt(customMinutes) || 0;
+    }
+    return parseInt(duration) || 0;
+  };
 
   const addOption = () => {
     const newOption: VoteOption = {
@@ -61,8 +102,13 @@ export const VoteCreateModal = ({ isOpen, onClose, onVoteCreated }: VoteCreateMo
       return;
     }
     
-    if (!endDate) {
-      toast.error("투표 종료일을 선택해주세요.");
+    if (!duration) {
+      toast.error("투표 종료 시간을 선택해주세요.");
+      return;
+    }
+
+    if (duration === "custom" && (!customMinutes || parseInt(customMinutes) <= 0)) {
+      toast.error("직접입력 시간을 올바르게 입력해주세요.");
       return;
     }
     
@@ -80,7 +126,7 @@ export const VoteCreateModal = ({ isOpen, onClose, onVoteCreated }: VoteCreateMo
         .insert({
           title: title.trim(),
           content: description.trim() || null,
-          expires_at: endDate.toISOString(),
+          expires_at: getEndTime().toISOString(),
           options: validOptions.map(opt => ({
             name: opt.name.trim(),
             vote_count: 0
@@ -99,7 +145,9 @@ export const VoteCreateModal = ({ isOpen, onClose, onVoteCreated }: VoteCreateMo
       // Reset form
       setTitle("");
       setDescription("");
-      setEndDate(undefined);
+      setDuration("");
+      setCustomMinutes("");
+      setIsCustomInput(false);
       setOptions([
         { id: "1", name: "찬성" },
         { id: "2", name: "보류" },
@@ -149,32 +197,49 @@ export const VoteCreateModal = ({ isOpen, onClose, onVoteCreated }: VoteCreateMo
             />
           </div>
 
-          {/* 종료일 */}
+          {/* 종료 시간 */}
           <div className="space-y-2">
-            <Label>투표 종료일 *</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "w-full justify-start text-left font-normal",
-                    !endDate && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {endDate ? format(endDate, "PPP", { locale: ko }) : "날짜를 선택하세요"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={endDate}
-                  onSelect={setEndDate}
-                  disabled={(date) => date < new Date()}
-                  initialFocus
+            <Label>투표 종료 시간 *</Label>
+            <Select value={duration} onValueChange={handleDurationChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="종료 시간을 선택하세요" />
+              </SelectTrigger>
+              <SelectContent>
+                {timeOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            {isCustomInput && (
+              <div className="space-y-2">
+                <Label htmlFor="customMinutes">분 입력</Label>
+                <Input
+                  id="customMinutes"
+                  type="number"
+                  value={customMinutes}
+                  onChange={(e) => setCustomMinutes(e.target.value)}
+                  placeholder="분 입력"
+                  min="1"
                 />
-              </PopoverContent>
-            </Popover>
+              </div>
+            )}
+            
+            {(duration && (duration !== "custom" || (duration === "custom" && customMinutes))) && (
+              <div className="text-sm text-muted-foreground space-y-1 p-3 bg-muted/50 rounded-md">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4" />
+                  <span className="font-medium">시간 설정</span>
+                </div>
+                <div>시작시간: {format(new Date(), "PPP p", { locale: ko })}</div>
+                <div>종료시간: {format(getEndTime(), "PPP p", { locale: ko })}</div>
+                <div className="text-xs">
+                  ({getMinutesForDuration()}분 후 종료)
+                </div>
+              </div>
+            )}
           </div>
 
           {/* 선택지 */}
