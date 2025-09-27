@@ -48,5 +48,5 @@ export const formatEndedTime = (endTime: Date, originalEndTime?: Date, startTime
     return `${endDate} ${endTimeStr}, ${durationText}`;
   }
   
-  return `${endDate} 종료됨`;
+  return `${endDate} ${endTimeStr}에 종료됨`;
 };
