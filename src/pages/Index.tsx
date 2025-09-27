@@ -74,7 +74,7 @@ const fetchActiveVotes = async () => {
     totalVotes: vote.vote_count || 0,
     endTime: vote.expires_at ? new Date(vote.expires_at) : new Date(Date.now() + 24 * 60 * 60 * 1000),
     isActive: vote.status === 'active',
-    isMyVote: false,
+    isMyVote: vote.creator_id === null, // 임시: creator_id가 없는 투표를 내 투표로 간주
     options: Array.isArray(vote.options) && vote.options.length > 0 ? 
       vote.options.map((option: any, index: number) => ({
         id: (option.id || index).toString(),
