@@ -127,9 +127,9 @@ export const VoteCreateModal = ({ isOpen, onClose, onVoteCreated }: VoteCreateMo
         return;
       }
 
-      const { error } = await supabase
-        .from('votes')
-        .insert({
+        const { error } = await supabase
+          .from('votes')
+          .insert({
           title: title.trim(),
           content: description.trim() || null,
           expires_at: getEndTime().toISOString(),
@@ -137,8 +137,7 @@ export const VoteCreateModal = ({ isOpen, onClose, onVoteCreated }: VoteCreateMo
           options: validOptions.map(opt => ({
             name: opt.name.trim(),
             vote_count: 0
-          })),
-          status: 'active'
+          }))
         });
 
       if (error) {

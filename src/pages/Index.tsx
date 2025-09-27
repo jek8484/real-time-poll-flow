@@ -19,11 +19,10 @@ const fetchActiveVotes = async () => {
   // 현재 사용자 정보 가져오기
   const currentUser = await getCurrentUser();
 
-  // Get active votes ordered by expires_at descending
+  // Get all votes ordered by expires_at descending
   const { data: votes, error: votesError } = await supabase
     .from('votes')
     .select('*')
-    .eq('status', 'active')
     .order('expires_at', { ascending: false });
 
   if (votesError) {
@@ -77,7 +76,7 @@ const fetchActiveVotes = async () => {
     description: vote.content || '',
     totalVotes: vote.vote_count || 0,
     endTime: vote.expires_at ? new Date(vote.expires_at) : new Date(Date.now() + 24 * 60 * 60 * 1000),
-    isActive: vote.status === 'active',
+    isActive: vote.expires_at ? new Date(vote.expires_at) > new Date() : true,
     isMyVote: currentUser && vote.creator_id === currentUser.id,
     options: Array.isArray(vote.options) && vote.options.length > 0 ? 
       vote.options.map((option: any, index: number) => ({
