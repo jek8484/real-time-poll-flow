@@ -9,9 +9,41 @@ interface VoteGraphProps {
   options: VoteOption[];
   totalVotes: number;
   winningOption: VoteOption;
+  currentChoice?: string | null;
+  previousChoice?: string | null;
 }
 
-export const VoteGraph = ({ options, totalVotes, winningOption }: VoteGraphProps) => {
+export const VoteGraph = ({ options, totalVotes, winningOption, currentChoice, previousChoice }: VoteGraphProps) => {
+  // 현재 선택을 반영한 임시 투표 수 계산
+  const getAdjustedVotes = (option: VoteOption) => {
+    let adjustedVotes = option.votes;
+    
+    // 이전 선택이 있었다면 그 투표를 제거
+    if (previousChoice === option.id) {
+      adjustedVotes = Math.max(0, adjustedVotes - 1);
+    }
+    
+    // 현재 선택이 있다면 그 투표를 추가
+    if (currentChoice === option.id) {
+      adjustedVotes = adjustedVotes + 1;
+    }
+    
+    return adjustedVotes;
+  };
+  
+  // 조정된 투표 수로 새로운 옵션 배열 생성
+  const adjustedOptions = options.map(option => ({
+    ...option,
+    votes: getAdjustedVotes(option)
+  }));
+  
+  // 조정된 총 투표 수 계산
+  const adjustedTotalVotes = adjustedOptions.reduce((sum, option) => sum + option.votes, 0);
+  
+  // 조정된 데이터로 승리 옵션 계산
+  const adjustedWinningOption = adjustedOptions.reduce((prev, current) => 
+    prev.votes > current.votes ? prev : current
+  );
   const getColorClasses = (color: string, isWinning: boolean) => {
     const baseClasses = {
       approve: isWinning ? 'bg-vote-approve text-white shadow-lg border border-vote-approve/30' : 'bg-vote-approve-light text-vote-approve',
@@ -26,9 +58,9 @@ export const VoteGraph = ({ options, totalVotes, winningOption }: VoteGraphProps
       {/* Main Graph Bar */}
       <div className="relative h-12 bg-surface rounded-lg overflow-hidden border border-card-border">
         <div className="absolute inset-0 flex">
-          {options.map((option, index) => {
-            const percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
-            const isWinning = option.id === winningOption.id;
+          {adjustedOptions.map((option, index) => {
+            const percentage = adjustedTotalVotes > 0 ? (option.votes / adjustedTotalVotes) * 100 : 0;
+            const isWinning = option.id === adjustedWinningOption.id;
             
             return (
               <div

@@ -116,6 +116,8 @@ export const VoteModal = ({ vote, isOpen, onClose, onVote }: VoteModalProps) => 
               options={vote.options} 
               totalVotes={vote.totalVotes}
               winningOption={winningOption}
+              currentChoice={vote.myChoice}
+              previousChoice={null}
             />
           </div>
 

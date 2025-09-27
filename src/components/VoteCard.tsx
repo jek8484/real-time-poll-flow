@@ -113,6 +113,8 @@ export const VoteCard = ({ vote, onVoteDeleted }: VoteCardProps) => {
               options={vote.options} 
               totalVotes={vote.totalVotes}
               winningOption={winningOption}
+              currentChoice={currentChoice}
+              previousChoice={vote.myChoice}
             />
           </div>
 
