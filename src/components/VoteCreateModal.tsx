@@ -31,7 +31,7 @@ export const VoteCreateModal = ({ isOpen, onClose, onVoteCreated }: VoteCreateMo
   const [isCustomInput, setIsCustomInput] = useState(false);
   const [options, setOptions] = useState<VoteOption[]>([
     { id: "1", name: "찬성" },
-    { id: "2", name: "보류" },
+    { id: "2", name: "고민중" },
     { id: "3", name: "반대" }
   ]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -148,7 +148,7 @@ export const VoteCreateModal = ({ isOpen, onClose, onVoteCreated }: VoteCreateMo
       setIsCustomInput(false);
       setOptions([
         { id: "1", name: "찬성" },
-        { id: "2", name: "보류" },
+        { id: "2", name: "고민중" },
         { id: "3", name: "반대" }
       ]);
       
