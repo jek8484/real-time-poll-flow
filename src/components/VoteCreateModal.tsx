@@ -84,10 +84,8 @@ export const VoteCreateModal = ({ isOpen, onClose, onVoteCreated }: VoteCreateMo
     setOptions([...options, newOption]);
   };
 
-  const removeOption = (id: string) => {
-    if (options.length > 2) {
-      setOptions(options.filter(opt => opt.id !== id));
-    }
+  const clearOption = (id: string) => {
+    setOptions(options.map(opt => opt.id === id ? { ...opt, name: "" } : opt));
   };
 
   const updateOption = (id: string, name: string) => {
@@ -259,7 +257,7 @@ export const VoteCreateModal = ({ isOpen, onClose, onVoteCreated }: VoteCreateMo
                       type="button"
                       variant="outline"
                       size="icon"
-                      onClick={() => removeOption(option.id)}
+                      onClick={() => clearOption(option.id)}
                       className="flex-shrink-0"
                     >
                       <X className="h-4 w-4" />
