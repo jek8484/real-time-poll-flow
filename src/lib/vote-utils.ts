@@ -57,9 +57,9 @@ export const getUserVote = async (voteId: number) => {
     .select('*')
     .eq('user_id', currentUser.id)
     .eq('vote_id', voteId)
-    .single();
+    .maybeSingle();
 
-  if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+  if (error) {
     throw error;
   }
 
@@ -69,7 +69,7 @@ export const getUserVote = async (voteId: number) => {
 // 투표와 함께 사용자의 투표 기록도 가져오기
 export const getVoteWithUserChoice = async (voteId: number) => {
   const [voteResult, userVoteResult] = await Promise.all([
-    supabase.from('votes').select('*').eq('id', voteId).single(),
+    supabase.from('votes').select('*').eq('id', voteId).maybeSingle(),
     getUserVote(voteId)
   ]);
 
