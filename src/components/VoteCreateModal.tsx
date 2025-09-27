@@ -243,27 +243,16 @@ export const VoteCreateModal = ({ isOpen, onClose, onVoteCreated }: VoteCreateMo
           {/* 선택지 */}
           <div className="space-y-2">
             <Label>선택지 *</Label>
-            <div className="space-y-2">
+            <div className="flex flex-wrap gap-2">
               {options.map((option, index) => (
-                <div key={option.id} className="flex gap-2">
-                  <Input
-                    value={option.name}
-                    onChange={(e) => updateOption(option.id, e.target.value)}
-                    placeholder={`선택지 ${index + 1}`}
-                    maxLength={50}
-                  />
-                  {options.length > 2 && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      onClick={() => clearOption(option.id)}
-                      className="flex-shrink-0"
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  )}
-                </div>
+                <Input
+                  key={option.id}
+                  value={option.name}
+                  onChange={(e) => updateOption(option.id, e.target.value)}
+                  placeholder={`선택지 ${index + 1}`}
+                  maxLength={50}
+                  className="flex-1 min-w-0"
+                />
               ))}
             </div>
           </div>
