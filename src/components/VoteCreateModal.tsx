@@ -203,18 +203,6 @@ export const VoteCreateModal = ({ isOpen, onClose, onVoteCreated }: VoteCreateMo
                 </div>
               ))}
             </div>
-            
-            {options.length < 5 && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={addOption}
-                className="w-full"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                선택지 추가
-              </Button>
-            )}
           </div>
 
           {/* 버튼 */}
