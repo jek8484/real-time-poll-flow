@@ -38,10 +38,15 @@ interface VoteCardProps {
 export const VoteCard = ({ vote, onVoteDeleted }: VoteCardProps) => {
   const [showModal, setShowModal] = useState(false);
   const [showActions, setShowActions] = useState(false);
+  const [currentChoice, setCurrentChoice] = useState<string | null>(vote.myChoice);
 
   const handleVote = (optionId: string) => {
-    // TODO: Implement vote logic
-    console.log(`Voting for option: ${optionId} in vote: ${vote.id}`);
+    // 이미 같은 옵션을 선택했다면 선택 취소
+    if (currentChoice === optionId) {
+      setCurrentChoice(null);
+    } else {
+      setCurrentChoice(optionId);
+    }
   };
 
   const getWinningOption = () => {
@@ -116,18 +121,18 @@ export const VoteCard = ({ vote, onVoteDeleted }: VoteCardProps) => {
             {vote.options.map((option) => (
               <Button
                 key={option.id}
-                variant={vote.myChoice === option.id ? "default" : "outline"}
+                variant={currentChoice === option.id ? "default" : "outline"}
                 size="sm"
                 onClick={() => handleVote(option.id)}
                 disabled={!vote.isActive}
                 className={`flex-1 ${
-                  vote.myChoice === option.id 
+                  currentChoice === option.id 
                     ? `bg-vote-${option.color} hover:bg-vote-${option.color} text-white`
                     : `hover:bg-vote-${option.color}-light hover:border-vote-${option.color}`
                 } transition-all duration-200`}
               >
                 <span>{option.name}</span>
-                {vote.myChoice === option.id && (
+                {currentChoice === option.id && (
                   <Check className="h-4 w-4 ml-2" />
                 )}
               </Button>
@@ -169,7 +174,7 @@ export const VoteCard = ({ vote, onVoteDeleted }: VoteCardProps) => {
 
       {/* Vote Detail Modal */}
       <VoteModal
-        vote={vote}
+        vote={{...vote, myChoice: currentChoice}}
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         onVote={handleVote}
