@@ -4,6 +4,7 @@ import { Plus, Search, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { VoteCard } from "@/components/VoteCard";
+import { VoteCreateModal } from "@/components/VoteCreateModal";
 import { AdminMenu } from "@/components/AdminMenu";
 import { HiddenVotesModal } from "@/components/HiddenVotesModal";
 import { ReportsModal } from "@/components/ReportsModal";
@@ -92,13 +93,14 @@ const fetchActiveVotes = async () => {
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [showAdminMenu, setShowAdminMenu] = useState(false);
   const [showHiddenVotesModal, setShowHiddenVotesModal] = useState(false);
   const [showReportsModal, setShowReportsModal] = useState(false);
   const [showChecklistModal, setShowChecklistModal] = useState(false);
 
   // Fetch active votes with filtering
-  const { data: votes = [], isLoading, error } = useQuery({
+  const { data: votes = [], isLoading, error, refetch } = useQuery({
     queryKey: ['active-votes'],
     queryFn: fetchActiveVotes,
     refetchInterval: 30000, // Refetch every 30 seconds
@@ -229,11 +231,19 @@ const Index = () => {
       <div className="fixed bottom-4 right-4 z-50">
         <Button
           size="icon"
+          onClick={() => setShowCreateModal(true)}
           className="h-14 w-14 rounded-full bg-gradient-primary hover:shadow-vote-card transition-all duration-300 hover:scale-105"
         >
           <Plus className="h-6 w-6" />
         </Button>
       </div>
+
+      {/* Vote Create Modal */}
+      <VoteCreateModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onVoteCreated={() => refetch()}
+      />
 
       {/* Hidden Votes Modal */}
       <HiddenVotesModal
