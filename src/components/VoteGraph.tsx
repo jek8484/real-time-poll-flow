@@ -1,14 +1,9 @@
-interface VoteOption {
-  id: string;
-  name: string;
-  votes: number;
-  color: "approve" | "thinking" | "reject";
-}
+import { VoteOption } from "../types";
 
 interface VoteGraphProps {
   options: VoteOption[];
   totalVotes: number;
-  winningOption: VoteOption;
+  winningOption: VoteOption | null; // winningOption이 null일 수 있도록 수정
 }
 
 export const VoteGraph = ({ options, totalVotes, winningOption }: VoteGraphProps) => {
@@ -28,7 +23,7 @@ export const VoteGraph = ({ options, totalVotes, winningOption }: VoteGraphProps
         <div className="absolute inset-0 flex">
           {options.map((option, index) => {
             const percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
-            const isWinning = option.id === winningOption.id;
+            const isWinning = winningOption ? option.id === winningOption.id : false; // winningOption이 null인지 확인
             
             return (
               <div
